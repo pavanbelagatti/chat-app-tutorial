@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.io Tutorial</title>
+  </head>
+  <body>
+    <h1>Socket.io Tutorial</h1>
+    <div id="messages"></div>
+    <input id="message-input" type="text" placeholder="Type your message here">
+    <button id="send-button">Send</button>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+      socket.on('connect', () => {
+        console.log('Connected to server');
+      });
+      socket.on('disconnect', () => {
+        console.log('Disconnected from server');
+      });
+      const messages = document.getElementById('messages');
+      const messageInput = document.getElementById('message-input');
+      const sendButton = document.getElementById('send-button');
+      sendButton.addEventListener('click', () => {
+        const message = messageInput.value;
+        socket.emit('message', message);
+        messageInput.value = '';
+      });
+      socket.on('message', (message) => {
+        const messageElement = document.createElement('div');
+        messageElement.innerText = message;
+        messages.appendChild(messageElement);
+      });
+    </script>
+  </body>
+</html>
+
